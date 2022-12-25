@@ -59,7 +59,7 @@ def convert_to_numerical(df):
     df['SaleCondition'] = df['SaleCondition'].replace({'Partial': 1, 'Family': 2, 'Alloca': 3, 'AdjLand': 4, 'Abnorml': 5, 'Normal': 6}) 
     df = df.replace({np.nan: 0})
     df = df.drop('Id', axis=1)
-    
+
     return df
 
 '''
@@ -98,7 +98,7 @@ def prepare_data(file_names, test_split):
         X_validate, y_validate = extract_labels(df_validate) 
 
     # return all datas as numpy array
-    return X_train.to_numpy(), X_validate.to_numpy(), y_train.to_numpy(), y_validate.to_numpy(), X_test.to_numpy()
+    return X_train.to_numpy().astype(float), X_validate.to_numpy().astype(float), y_train.to_numpy().astype(float), y_validate.to_numpy().astype(float), X_test.to_numpy().astype(float)
 
 '''
 normalize all data between 0 and 1
@@ -137,7 +137,7 @@ if __name__ == '__main__':
 
     df_test = convert_to_numerical(df_test)
 
-    X_train, X_validate, y_train, y_validate, X_test, _ = prepare_data(['train.csv', 'test.csv'], test_split=0.1)
+    X_train, X_validate, y_train, y_validate, X_test = prepare_data(['train.csv', 'test.csv'], test_split=0.1)
     print(f'X: {X_train} \n Shape: {X_train.shape}')
     print()
     print(f'y: {y_train} \n Shape: {y_train.shape}')

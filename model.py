@@ -1,7 +1,8 @@
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.losses import mae
-from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.optimizers import Adam, RMSprop
+from tensorflow import sqrt, reduce_mean
 from data import prepare_data
 import matplotlib.pyplot as plt
 
@@ -27,6 +28,9 @@ def build_model():
 
     return model
 
+def rmse(y_true, y_pred):
+    return sqrt(reduce_mean((y_true - y_pred)**2)) 
+
 if __name__ == '__main__':
     # define size of validation set during training
     test_split = 0.0
@@ -40,12 +44,12 @@ if __name__ == '__main__':
 
     # build DNN Model
     model = build_model()
-
+    model.load_weights('./checkpoints/my_checkpoint6')
     # compile model with mean average error as loss function and setting Adam as the optimizer
-    model.compile(loss=mae, optimizer=Adam(learning_rate=1e-5), metrics=['mse'])
+    model.compile(loss=rmse, optimizer=RMSprop(learning_rate=1e-7), metrics=['mse', 'mae'])
     
     # fit the model
-    history = model.fit(X_train, y_train, batch_size=32, epochs=2000, validation_data=(X_validate, y_validate))
+    history = model.fit(X_train, y_train, batch_size=32, epochs=3000, validation_data=(X_validate, y_validate))
 
     # save weights of model
     model.save_weights('./checkpoints/my_checkpoint6')

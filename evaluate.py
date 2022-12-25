@@ -6,7 +6,7 @@ import csv
 if __name__ == '__main__':
     # build model and load weigths of pretained model
     model = build_model()
-    model.load_weights('./checkpoints/my_checkpoint5')
+    model.load_weights('./checkpoints/my_checkpoint6')
 
     # prepare test data for prediction
     _, _, _, _, X_test = prepare_data(['train.csv', 'test.csv'], test_split=0.2)
